@@ -4,5 +4,5 @@ spark-flow/
 data*/
 *xlsx
 *xls
-.csv
-.log
+*csv
+*log
