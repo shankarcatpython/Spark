@@ -1,11 +1,17 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.types import StructType, StructField, StringType, DoubleType
 import time 
+from pyspark.sql.functions import col,hour
+
+
+# Set number of partitions
+num_partitions = 5
 
 # Create a SparkSession
 spark = SparkSession.builder \
-    .appName("Read Schema of text file") \
+    .appName("HouseholdConsumptionAnalysis") \
     .master("local[2]") \
+    .config("spark.sql.shuffle.partitions", "5") \
     .getOrCreate()
 
 
@@ -26,12 +32,17 @@ schema = StructType([
 ])
 
 # Read the TXT file with the defined schema
-schema_df = spark.read.option("header", "true").option("delimiter", ";").schema(schema).csv(file_path)
+consumption_df = spark.read.option("header", "true").option("delimiter", ";").schema(schema).csv(file_path)
+select_date_time_df = consumption_df.select("Date", "Time").filter(col("Date").substr(6, 2) == '01')
 
-# Print the schema
-schema_df.printSchema()
 
-time.sleep(30)
+# Print logical plan
+print("Logical Plan for consumption dataframe : --> ")
+consumption_df.explain(extended=True)
+print("Logical Plan for Date and time dataframe : --> ")
+select_date_time_df.explain(extended=True)
+print("Number of rows for consumption dataframe:", consumption_df.count())
+print("Number of rows for date and time dataframe:", select_date_time_df.count())
 
 # Stop the SparkSession
 spark.stop()

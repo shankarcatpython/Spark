@@ -1,3 +1,8 @@
 spark-flow/
 *ipynb
 *txt
+data*/
+*xlsx
+*xls
+.csv
+.log
