@@ -19,8 +19,6 @@ df = table.to_pandas()
 table_written = pa.Table.from_pandas(df)
 pq.write_table(table_written, 'example_written.parquet')
 
-
-
 # Open Parquet file
 pq_file = pq.ParquetFile(parquet_file)
 

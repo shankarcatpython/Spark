@@ -28,3 +28,6 @@ sales_dataframe.select("Manufacturer","Model","Sales in thousands","Row_Number",
 
 # Show the DataFrame
 sales_dataframe.show()
+
+# Stop the SparkSession
+spark.stop()
